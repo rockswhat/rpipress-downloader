@@ -165,7 +165,8 @@ for magazine, Magazine in filtered_magazines.items():
                 # Download each book if not already there
                 for book_name, book_href in books.items():
                     try:
-                        book_path = os.path.join(output_path, book_name + '.pdf')
+                        book_cleaned_name = "".join(ch for ch in book_name if ch.isalnum())
+                        book_path = os.path.join(output_path, book_cleaned_name + '.pdf')
                         if not os.path.exists(book_path):
                             r = requests.get(base_url + book_href + '/pdf')
                             data = r.text
@@ -185,7 +186,7 @@ for magazine, Magazine in filtered_magazines.items():
                     except():
                         if not args.quiet: print('ERROR: There was an error downloading ' + Magazine + ' book ' + book_name)
                     else:
-                        if not args.quiet: print(Magazine + ' book \'' + book_name + '\' downloaded!')
+                        if not args.quiet: print(Magazine + ' book \'' + book_cleaned_name + '\' downloaded!')
 
 if not args.quiet:
     if not download: print('You are up to date')
